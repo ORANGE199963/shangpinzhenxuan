@@ -15,6 +15,8 @@ public enum ResultCodeEnum {
     DATA_ERROR(204, "数据异常"),
     ACCOUNT_STOP( 216, "账号已停用"),
 
+    USERNAME_OR_PASSWORD_IS_EMPTY(301 , "用户名或者密码为空"),
+    USER_NOT_EXISTS(302 , "用户不存在"),
     STOCK_LESS( 219, "库存不足"),
 
     ;
