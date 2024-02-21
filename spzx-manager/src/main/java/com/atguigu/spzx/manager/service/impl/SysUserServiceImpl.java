@@ -3,6 +3,7 @@ package com.atguigu.spzx.manager.service.impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.spzx.common.exp.GuiguException;
+import com.atguigu.spzx.manager.controller.SysUserVo;
 import com.atguigu.spzx.manager.mapper.SysUserMapper;
 import com.atguigu.spzx.manager.service.SysUserService;
 import com.atguigu.spzx.model.dto.system.LoginDto;
@@ -27,6 +28,8 @@ public class SysUserServiceImpl implements SysUserService {
     RedisTemplate<String,String> redisTemplate;
     @Override
     public LoginVo login(LoginDto loginDto) {
+
+        this.checkCaptchaCode(loginDto);
 
         String userName = loginDto.getUserName();
         String password = loginDto.getPassword();
@@ -60,5 +63,39 @@ public class SysUserServiceImpl implements SysUserService {
         LoginVo loginVo = new LoginVo();
         loginVo.setToken(token);
         return loginVo;
+    }
+
+    @Override
+    public SysUserVo getUserInfo(String token) {
+        String key = "user:login:" + token;
+        String jsonString = redisTemplate.opsForValue().get(key);
+
+        if(StringUtils.isEmpty(jsonString)){
+            throw new GuiguException(ResultCodeEnum.TOKEN_INVALIDATE);
+        }
+
+        SysUser sysUser = JSON.parseObject(jsonString, SysUser.class);
+        SysUserVo sysUserVo = new SysUserVo();
+        sysUserVo.setId(sysUser.getId());
+        sysUserVo.setName(sysUser.getName());
+        sysUserVo.setAvatar(sysUser.getAvatar());
+        return sysUserVo;
+    }
+
+    private void checkCaptchaCode(LoginDto loginDto) {
+        String codeKey = loginDto.getCodeKey();
+        String key = "user:code:" + codeKey;
+        String codeFromRedis = redisTemplate.opsForValue().get(key);
+
+        if(StringUtils.isEmpty(codeFromRedis)){
+            throw new GuiguException(ResultCodeEnum.VALIDATECODE_EXPIRED);
+        }
+
+        String captcha = loginDto.getCaptcha();
+        if(!codeFromRedis.equals(captcha)){
+            throw new GuiguException(ResultCodeEnum.VALIDATECODE_ERROR);
+        }
+
+        redisTemplate.delete(key);
     }
 }

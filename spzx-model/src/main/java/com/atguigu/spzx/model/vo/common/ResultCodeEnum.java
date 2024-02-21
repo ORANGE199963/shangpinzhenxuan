@@ -17,6 +17,8 @@ public enum ResultCodeEnum {
 
     USERNAME_OR_PASSWORD_IS_EMPTY(301 , "用户名或者密码为空"),
     USER_NOT_EXISTS(302 , "用户不存在"),
+    VALIDATECODE_EXPIRED(303 , "验证码已过期") ,
+    TOKEN_INVALIDATE(304 , "token令牌无效") ,
     STOCK_LESS( 219, "库存不足"),
 
     ;
