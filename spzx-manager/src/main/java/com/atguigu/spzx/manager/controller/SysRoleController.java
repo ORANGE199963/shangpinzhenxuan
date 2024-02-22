@@ -19,6 +19,14 @@ public class SysRoleController {
     @Autowired
     SysRoleService sysRoleService;
 
+
+    @Operation(summary = "修改角色")
+    @PutMapping("updateRole")
+    public Result updateRole(@RequestBody SysRole sysRole){
+        sysRoleService.updateRole(sysRole);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
     @Operation(summary = "添加角色")
     @PostMapping("addRole")
     public Result addRole(@RequestBody SysRole sysRole){
