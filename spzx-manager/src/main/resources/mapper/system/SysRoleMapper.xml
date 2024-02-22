@@ -13,4 +13,8 @@
     <select id="selectList" resultType="com.atguigu.spzx.model.entity.system.SysRole">
         select * from sys_role <include refid="whereCondition"/>
     </select>
+    
+    <update id="deleteById">
+        update sys_user set is_deleted = 1 where id = #{roleId}
+    </update>
 </mapper>

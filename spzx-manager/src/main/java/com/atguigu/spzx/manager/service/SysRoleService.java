@@ -5,4 +5,6 @@ import com.github.pagehelper.PageInfo;
 
 public interface SysRoleService {
     PageInfo findByPage(Integer pageNum, Integer pageSize, SysRoleDto sysRoleDto);
+
+    void deleteById(Long roleId);
 }

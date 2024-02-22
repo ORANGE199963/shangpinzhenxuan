@@ -24,4 +24,9 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         return new PageInfo(list);
     }
+
+    @Override
+    public void deleteById(Long roleId) {
+        sysRoleMapper.deleteById(roleId);
+    }
 }

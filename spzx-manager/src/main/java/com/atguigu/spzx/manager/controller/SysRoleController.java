@@ -18,6 +18,13 @@ public class SysRoleController {
     @Autowired
     SysRoleService sysRoleService;
 
+    @Operation(summary = "根据角色id逻辑删除")
+    @DeleteMapping("deleteById/{roleId}")
+    public Result deleteById(@PathVariable Long roleId){
+        sysRoleService.deleteById(roleId);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
     @Operation(summary = "分页查询角色列表")
     @PostMapping("/findByPage/{pageNum}/{pageSize}")
     public Result findByPage(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @RequestBody SysRoleDto sysRoleDto){
