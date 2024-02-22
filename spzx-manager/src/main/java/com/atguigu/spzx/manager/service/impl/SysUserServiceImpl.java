@@ -82,6 +82,12 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserVo;
     }
 
+    @Override
+    public void logout(String token) {
+        String key = "user:login:" + token;
+        redisTemplate.delete(key);
+    }
+
     private void checkCaptchaCode(LoginDto loginDto) {
         String codeKey = loginDto.getCodeKey();
         String key = "user:code:" + codeKey;

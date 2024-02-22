@@ -24,6 +24,12 @@ public class IndexController {
     ValidateCodeService validateCodeService;
 
 
+    @Operation(summary = "退出接口")
+    @DeleteMapping("logout")
+    public Result logout(@RequestHeader String token){
+        sysUserService.logout(token);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
     @Operation(summary = "根据请求头token查询用户信息")
     @GetMapping("getUserInfo")
     public Result getUserInfo(@RequestHeader String token){
