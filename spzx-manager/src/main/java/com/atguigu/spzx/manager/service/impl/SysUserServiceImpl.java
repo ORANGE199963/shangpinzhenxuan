@@ -3,6 +3,7 @@ package com.atguigu.spzx.manager.service.impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.spzx.common.exp.GuiguException;
+import com.atguigu.spzx.manager.auth.ThreadLocalUtil;
 import com.atguigu.spzx.manager.controller.SysUserVo;
 import com.atguigu.spzx.manager.mapper.SysUserMapper;
 import com.atguigu.spzx.manager.service.SysUserService;
@@ -13,7 +14,6 @@ import com.atguigu.spzx.model.vo.system.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.UUID;
@@ -67,14 +67,18 @@ public class SysUserServiceImpl implements SysUserService {
 
     @Override
     public SysUserVo getUserInfo(String token) {
-        String key = "user:login:" + token;
-        String jsonString = redisTemplate.opsForValue().get(key);
+//        String key = "user:login:" + token;
+//        String jsonString = redisTemplate.opsForValue().get(key);
+//
+//        if(StringUtils.isEmpty(jsonString)){
+//            throw new GuiguException(ResultCodeEnum.TOKEN_INVALIDATE);
+//        }
 
-        if(StringUtils.isEmpty(jsonString)){
-            throw new GuiguException(ResultCodeEnum.TOKEN_INVALIDATE);
-        }
+//        SysUser sysUser = JSON.parseObject(jsonString, SysUser.class);
 
-        SysUser sysUser = JSON.parseObject(jsonString, SysUser.class);
+        SysUser sysUser = ThreadLocalUtil.getSysUser();
+
+
         SysUserVo sysUserVo = new SysUserVo();
         sysUserVo.setId(sysUser.getId());
         sysUserVo.setName(sysUser.getName());
