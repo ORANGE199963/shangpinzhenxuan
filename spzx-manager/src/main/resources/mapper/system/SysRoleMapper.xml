@@ -15,6 +15,11 @@
     </select>
     
     <update id="deleteById">
-        update sys_user set is_deleted = 1 where id = #{roleId}
+        update sys_role set is_deleted = 1 where id = #{roleId}
     </update>
+
+    <insert id="addRole">
+        INSERT INTO `sys_role`(role_name,role_code,description) VALUE(#{roleName},#{roleCode},#{description})
+    </insert>
+
 </mapper>

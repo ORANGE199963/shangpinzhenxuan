@@ -2,6 +2,7 @@ package com.atguigu.spzx.manager.controller;
 
 import com.atguigu.spzx.manager.service.SysRoleService;
 import com.atguigu.spzx.model.dto.system.SysRoleDto;
+import com.atguigu.spzx.model.entity.system.SysRole;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,12 @@ public class SysRoleController {
     @Autowired
     SysRoleService sysRoleService;
 
+    @Operation(summary = "添加角色")
+    @PostMapping("addRole")
+    public Result addRole(@RequestBody SysRole sysRole){
+        sysRoleService.addRole(sysRole);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
     @Operation(summary = "根据角色id逻辑删除")
     @DeleteMapping("deleteById/{roleId}")
     public Result deleteById(@PathVariable Long roleId){
