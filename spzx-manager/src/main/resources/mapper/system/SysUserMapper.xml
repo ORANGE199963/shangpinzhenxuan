@@ -8,4 +8,29 @@
     <select id="findByUsername" resultType="com.atguigu.spzx.model.entity.system.SysUser">
         select * from sys_user where username = #{userName} and is_deleted = 0
     </select>
+
+    <sql id="whereCondition">
+        <where>
+            is_deleted = 0
+                <if test="keyword!=null and keyword!=''">
+                    and (username like concat('%',#{keyword},'%') or name like concat('%',#{keyword},'%') or phone like concat('%',#{keyword},'%'))
+                </if>
+                <if test="createTimeBegin!=null and createTimeBegin!=''">
+                    and create_time >= #{createTimeBegin}
+                </if>
+            <if test="createTimeEnd!=null and createTimeEnd!=''">
+                and create_time &lt;= #{createTimeEnd}
+            </if>
+        </where>
+    </sql>
+    <select id="findByPage" resultType="com.atguigu.spzx.model.entity.system.SysUser">
+        select * from sys_user
+        <include refid="whereCondition"/>
+        order by id desc
+    </select>
+
+    <insert id="addUser">
+        insert into sys_user (username,password,name,phone,avatar,description)
+            values (#{userName},#{password},#{name},#{phone},#{avatar},#{description})
+    </insert>
 </mapper>

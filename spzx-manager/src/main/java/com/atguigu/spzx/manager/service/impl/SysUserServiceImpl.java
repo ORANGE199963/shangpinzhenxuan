@@ -8,14 +8,18 @@ import com.atguigu.spzx.manager.controller.SysUserVo;
 import com.atguigu.spzx.manager.mapper.SysUserMapper;
 import com.atguigu.spzx.manager.service.SysUserService;
 import com.atguigu.spzx.model.dto.system.LoginDto;
+import com.atguigu.spzx.model.dto.system.SysUserDto;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.system.LoginVo;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +94,28 @@ public class SysUserServiceImpl implements SysUserService {
     public void logout(String token) {
         String key = "user:login:" + token;
         redisTemplate.delete(key);
+    }
+
+    @Override
+    public PageInfo findByPage(Integer pageNum, Integer pageSize, SysUserDto sysUserDto) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<SysUser> list = sysUserMapper.findByPage(sysUserDto);
+        return new PageInfo(list);
+    }
+
+    @Override
+    public void addUser(SysUser sysUser) {
+        String userName = sysUser.getUserName();
+        SysUser sysUserFromDb = sysUserMapper.findByUsername(userName);
+        if(sysUserFromDb!=null){
+            throw new GuiguException(ResultCodeEnum.USER_NAME_IS_EXISTS);
+        }
+
+        String password = sysUser.getPassword();
+        String passwordByMd5 = DigestUtil.md5Hex(password);
+        sysUser.setPassword(passwordByMd5);
+
+        sysUserMapper.addUser(sysUser);
     }
 
     private void checkCaptchaCode(LoginDto loginDto) {
