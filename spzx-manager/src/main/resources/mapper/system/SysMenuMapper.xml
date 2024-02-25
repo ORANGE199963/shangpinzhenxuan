@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysMenuMapper">
+
+    <select id="findByParentId" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select * from sys_menu where parent_id = #{parentId} and is_deleted = 0
+        order by sort_value
+    </select>
+
+    <insert id="addMenu">
+        insert into sys_menu (parent_id,title,component,sort_value)
+            value (#{parentId},#{component},#{sortValue})
+    </insert>
+</mapper>
