@@ -3,13 +3,16 @@ package com.atguigu.spzx.manager.service.impl;
 import com.atguigu.spzx.common.exp.GuiguException;
 import com.atguigu.spzx.manager.mapper.SysMenuMapper;
 import com.atguigu.spzx.manager.service.SysMenuService;
+import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysMenuServiceImpl implements SysMenuService {
@@ -49,6 +52,27 @@ public class SysMenuServiceImpl implements SysMenuService {
         sysMenuMapper.updateMenu(sysMenu);
     }
 
+    @Override
+    public Map getMenuListAndMenuIdList(Long roleId) {
+        Map map = new HashMap();
+        map.put("menuList" ,this.menuListByParentId(0L));
+        map.put("menuIdList",null);
+
+        return map;
+    }
+
+    @Override
+    public void doAssignMenu(AssginMenuDto menuDto) {
+        sysMenuMapper.deleteByRoleId(menuDto);
+
+        List<Map<String, Number>> menuIdList = menuDto.getMenuIdList();
+        menuIdList.forEach(map->{
+            Number menuId = map.get("menuId");
+            Number isHalf = map.get("isHalf");
+
+            sysMenuMapper.doAssignRoleMenu(menuDto.getRoleId() , menuId , isHalf);
+        });
+    }
 
 
     public void deleteMenu2(Long menuId) {

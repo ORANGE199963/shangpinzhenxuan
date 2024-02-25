@@ -20,4 +20,12 @@
         update sys_menu set title=#{title},component=#{component}, sort_value=#{sortValue},status=#{status}
         where id=#{id}
     </update>
+
+    <delete id="deleteByRoleId">
+        DELETE FROM `sys_role_menu`   WHERE role_id = #{roleId}
+    </delete>
+
+    <insert id="doAssignRoleMenu">
+        INSERT INTO `sys_role_menu`(role_id,menu_id,is_half) VALUE(#{roleId},#{menuId},#{isHalf})
+    </insert>
 </mapper>

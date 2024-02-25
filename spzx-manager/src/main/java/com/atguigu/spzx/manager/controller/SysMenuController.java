@@ -1,6 +1,7 @@
-package com.atguigu.spzx.manager;
+package com.atguigu.spzx.manager.controller;
 
 import com.atguigu.spzx.manager.service.SysMenuService;
+import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @Tag(name = "菜单管理")
 @RestController
@@ -20,6 +22,18 @@ public class SysMenuController {
     SysMenuService sysMenuService;
 
 
+    @Operation(summary = "为角色分配菜单")
+    @PostMapping("doAssignMenu")
+    public Result doAssignMenu(@RequestBody AssginMenuDto menuDto){
+        sysMenuService.doAssignMenu(menuDto);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+    @Operation(summary = "为角色分配菜单的弹窗上所需要的数据（菜单集合+该角色已分配的菜单id集合）")
+    @GetMapping("getMenuListAndMenuIdList/{roleId}")
+    public Result getMenuListAndMenuIdList(@PathVariable Long roleId){
+        Map map = sysMenuService.getMenuListAndMenuIdList(roleId);
+        return Result.build(map,ResultCodeEnum.SUCCESS);
+    }
 
     @Operation(summary = "更新菜单")
     @PostMapping("updateMenu")

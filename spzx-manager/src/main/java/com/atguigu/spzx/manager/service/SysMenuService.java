@@ -1,8 +1,10 @@
 package com.atguigu.spzx.manager.service;
 
+import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SysMenuService {
 
@@ -14,4 +16,7 @@ public interface SysMenuService {
 
     void updateMenu(SysMenu sysMenu);
 
+    Map getMenuListAndMenuIdList(Long roleId);
+
+    void doAssignMenu(AssginMenuDto menuDto);
 }

@@ -1,7 +1,9 @@
 package com.atguigu.spzx.manager.mapper;
 
+import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,4 +16,8 @@ public interface SysMenuMapper {
     void deleteByMenuId(Long menuId);
 
     void updateMenu(SysMenu sysMenu);
+
+    void deleteByRoleId(AssginMenuDto menuDto);
+
+    void doAssignRoleMenu(@Param("roleId") Long roleId,@Param("menuId") Number menuId,@Param("isHalf") Number isHalf);
 }
