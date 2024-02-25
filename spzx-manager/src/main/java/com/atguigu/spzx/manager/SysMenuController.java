@@ -19,9 +19,19 @@ public class SysMenuController {
     @Autowired
     SysMenuService sysMenuService;
 
+
+    @Operation(summary = "更新菜单")
+    @DeleteMapping("updateMenu/{menuId}")
+    public Result updateMenu(@RequestBody SysMenu sysMenu){
+        sysMenuService.updateMenu(sysMenu);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
+
+    @Operation(summary = "删除菜单")
     @DeleteMapping("deleteMenu/{menuId}")
-    public Result deleteMenu(@PathVariable Long menuID){
-        sysMenuService.deleteMenu(menuID);
+    public Result deleteMenu(@PathVariable Long menuId){
+        sysMenuService.deleteMenu(menuId);
         return Result.build(null,ResultCodeEnum.SUCCESS);
     }
 

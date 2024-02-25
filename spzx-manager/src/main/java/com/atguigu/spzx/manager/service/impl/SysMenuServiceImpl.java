@@ -35,13 +35,18 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
     @Override
-    public void deleteMenu(Long menuID) {
-        List<SysMenu> byParentId = sysMenuMapper.findByParentId(menuID);
+    public void deleteMenu(Long menuId) {
+        List<SysMenu> byParentId = sysMenuMapper.findByParentId(menuId);
         if (byParentId != null && byParentId.size() > 0) {
             throw new GuiguException(ResultCodeEnum.NODE_ERROR);
         }
 
-        sysMenuMapper.deleteByMenuId(menuID);
+        sysMenuMapper.deleteByMenuId(menuId);
+    }
+
+    @Override
+    public void updateMenu(SysMenu sysMenu) {
+        sysMenuMapper.updateMenu(sysMenu);
     }
 
 

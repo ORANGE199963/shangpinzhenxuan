@@ -15,4 +15,9 @@
     <update id="deleteByMenuId">
         update sys_menu set is_deleted = 1 where id = #{menuId}
     </update>
+
+    <update id="updateMenu">
+        update sys_menu set title=#{title},component=#{component}, sort_value=#{sortValue},status=#{status}
+        where id=#{id}
+    </update>
 </mapper>

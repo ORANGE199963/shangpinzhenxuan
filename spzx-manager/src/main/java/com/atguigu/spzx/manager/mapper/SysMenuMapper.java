@@ -11,5 +11,7 @@ public interface SysMenuMapper {
 
     void addMenu(SysMenu sysMenu);
 
-    void deleteByMenuId(Long menuID);
+    void deleteByMenuId(Long menuId);
+
+    void updateMenu(SysMenu sysMenu);
 }
