@@ -23,7 +23,7 @@ public class SysMenuController {
     @Operation(summary = "添加菜单")
     @PostMapping("addMenu")
     public Result addMenu(@RequestBody SysMenu sysMenu){
-        sysMenuService.addM1.enu(sysMenu);
+        sysMenuService.addMenu(sysMenu);
         return Result.build(null,ResultCodeEnum.SUCCESS);
     }
     @Operation(summary = "菜单列表树")
