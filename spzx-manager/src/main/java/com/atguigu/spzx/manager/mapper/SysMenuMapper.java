@@ -10,4 +10,6 @@ public interface SysMenuMapper {
     List<SysMenu> findByParentId(long parentId);
 
     void addMenu(SysMenu sysMenu);
+
+    void deleteByMenuId(Long menuID);
 }

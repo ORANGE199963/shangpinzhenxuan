@@ -9,4 +9,6 @@ public interface SysMenuService {
     List<SysMenu> menuListByParentId(long parentId);
 
     void addMenu(SysMenu sysMenu);
+
+    void deleteMenu(Long menuID);
 }

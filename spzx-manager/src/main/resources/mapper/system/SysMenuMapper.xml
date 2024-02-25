@@ -8,7 +8,11 @@
     </select>
 
     <insert id="addMenu">
-        insert into sys_menu (parent_id,title,component,sort_value)
-            value (#{parentId},#{component},#{sortValue})
+        insert into sys_menu (parent_id,title,component,sort_value,status)
+            value (#{parentId},#{title},#{component},#{sortValue},#{status})
     </insert>
+
+    <update id="deleteByMenuId">
+        update sys_menu set is_deleted = 1 where id = #{menuId}
+    </update>
 </mapper>
