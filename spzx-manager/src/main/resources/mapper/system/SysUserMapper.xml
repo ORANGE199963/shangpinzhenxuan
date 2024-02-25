@@ -33,4 +33,17 @@
         insert into sys_user (username,password,name,phone,avatar,description)
             values (#{userName},#{password},#{name},#{phone},#{avatar},#{description})
     </insert>
+
+    <update id="editUser">
+        UPDATE `sys_user` SET username = #{userName},password=#{password},name=#{name},phone=#{phone},avatar=#{avatar},description=#{description}
+        WHERE id = #{id}
+    </update>
+
+    <select id="findById"  resultType="com.atguigu.spzx.model.entity.system.SysUser">
+        select * from sys_user where id = #{id} and is_deleted = 0
+    </select>
+
+    <update id="deleteById">
+        update sys_user set is_deleted = 1 where id = #{id}
+    </update>
 </mapper>

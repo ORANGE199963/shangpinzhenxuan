@@ -17,4 +17,9 @@ public interface SysUserService {
     PageInfo findByPage(Integer pageNum, Integer pageSize, SysUserDto sysUserDto);
 
     void addUser(SysUser sysUser);
+
+    void editUser(SysUser sysUser);
+
+    void deleteById(Long id);
+
 }

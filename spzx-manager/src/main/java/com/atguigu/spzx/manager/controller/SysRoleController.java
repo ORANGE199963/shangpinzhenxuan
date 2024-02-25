@@ -1,6 +1,7 @@
 package com.atguigu.spzx.manager.controller;
 
 import com.atguigu.spzx.manager.service.SysRoleService;
+import com.atguigu.spzx.model.dto.system.AssginRoleDto;
 import com.atguigu.spzx.model.dto.system.SysRoleDto;
 import com.atguigu.spzx.model.entity.system.SysRole;
 import com.atguigu.spzx.model.vo.common.Result;
@@ -11,6 +12,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Tag(name = "角色管理")
 @RestController
 @RequestMapping("/admin/system/sysRole")
@@ -20,6 +25,24 @@ public class SysRoleController {
     SysRoleService sysRoleService;
 
 
+    @Operation(summary = "为用户分配角色")
+    @PostMapping("doAssign")
+    public Result doAssign(@RequestBody AssginRoleDto assginRoleDto){
+        sysRoleService.doAssign(assginRoleDto);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+    @Operation(summary = "查询所有角色列表和当前用户已分配的角色id集合")
+    @GetMapping("findRoleListAndRoleIdList/{userId}")
+    public Result findRoleList(@PathVariable Long userId){
+        List<SysRole> roleList = sysRoleService.findRoleList();
+        List<Long> roleIdList = sysRoleService.findRoleIdList(userId);
+
+        Map map = new HashMap();
+        map.put("roleList",roleList);
+        map.put("roleIdList",roleIdList);
+
+        return Result.build(map,ResultCodeEnum.SUCCESS);
+    }
     @Operation(summary = "修改角色")
     @PutMapping("updateRole")
     public Result updateRole(@RequestBody SysRole sysRole){

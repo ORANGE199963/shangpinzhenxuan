@@ -25,4 +25,21 @@
     <update id="updateRole">
         UPDATE `sys_role` SET role_name = #{roleName},role_code=#{roleCode} , description = #{description} WHERE id = #{id}
     </update>
+
+    <select id="findRoleList" resultType="com.atguigu.spzx.model.entity.system.SysRole">
+        select * from sys_role where is_deleted = 0
+    </select>
+
+    <delete id="deleteFromUserRoleByUserId">
+        DELETE FROM `sys_user_role` WHERE user_id = #{userId}
+    </delete>
+
+    <insert id="doAssign">
+        INSERT INTO `sys_user_role`(role_id,user_id) VALUE(#{roleId},#{userId})
+    </insert>
+
+
+    <select id="findRoleIdList" resultType="java.lang.Long">
+        SELECT role_id FROM  `sys_user_role` WHERE user_id = #{userId}
+    </select>
 </mapper>

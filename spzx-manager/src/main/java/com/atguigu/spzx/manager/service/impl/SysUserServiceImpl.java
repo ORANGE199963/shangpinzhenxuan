@@ -118,6 +118,26 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserMapper.addUser(sysUser);
     }
 
+    @Override
+    public void editUser(SysUser sysUser) {
+        Long id = sysUser.getId();
+        SysUser sysUserById = sysUserMapper.findById(id);
+
+        if(!sysUserById.getUserName().equals(sysUser.getUserName())){
+            SysUser byUsername = sysUserMapper.findByUsername(sysUser.getUserName());
+            if(byUsername!=null){
+                throw new GuiguException(ResultCodeEnum.USER_NAME_IS_EXISTS);
+            }
+        }
+        sysUserMapper.editUser(sysUser);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        sysUserMapper.deleteById(id);
+    }
+
+
     private void checkCaptchaCode(LoginDto loginDto) {
         String codeKey = loginDto.getCodeKey();
         String key = "user:code:" + codeKey;

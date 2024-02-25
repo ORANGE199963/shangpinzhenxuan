@@ -19,6 +19,22 @@ public class SysUserController {
     @Autowired
     SysUserService sysUserService;
 
+
+    @Operation(summary = "删除用户")
+    @DeleteMapping("deleteById/{id}")
+    public Result deleteById(@PathVariable Long id){
+        sysUserService.deleteById(id);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+    @Operation(summary = "修改用户")
+    @PostMapping("editUser")
+    public Result editUser(@RequestBody SysUser sysUser){
+
+        sysUserService.editUser(sysUser);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
+
     @Operation(summary = "添加用户")
     @PostMapping("addUser")
     public Result addUser(@RequestBody SysUser sysUser){

@@ -15,4 +15,12 @@ public interface SysUserMapper {
     List<SysUser> findByPage(SysUserDto sysUserDto);
 
     void addUser(SysUser sysUser);
+
+    void editUser(SysUser sysUser);
+
+    SysUser findById(Long id);
+
+    void deleteById(Long id);
+
+
 }

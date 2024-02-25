@@ -30,3 +30,9 @@ spzx:
       - /webjars/**
       - /favicon.ico
       - /v3/api-docs/**x`
+minio:
+  endpoint: http://192.168.126.128:9000
+  username: admin
+  password: admin123456
+  bucketName: spzx-bucket # 最好是先去创建这个bucket
+

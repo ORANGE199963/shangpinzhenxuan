@@ -2,6 +2,7 @@ package com.atguigu.spzx.manager.service.impl;
 
 import com.atguigu.spzx.manager.mapper.SysRoleMapper;
 import com.atguigu.spzx.manager.service.SysRoleService;
+import com.atguigu.spzx.model.dto.system.AssginRoleDto;
 import com.atguigu.spzx.model.dto.system.SysRoleDto;
 import com.atguigu.spzx.model.entity.system.SysRole;
 import com.github.pagehelper.PageHelper;
@@ -38,5 +39,26 @@ public class SysRoleServiceImpl implements SysRoleService {
     @Override
     public void updateRole(SysRole sysRole) {
         sysRoleMapper.updateRole(sysRole);
+    }
+
+    @Override
+    public List<SysRole> findRoleList() {
+        sysRoleMapper.findRoleList();
+        return sysRoleMapper.findRoleList();
+    }
+
+    @Override
+    public void doAssign(AssginRoleDto assginRoleDto) {
+        sysRoleMapper.deleteFromUserRoleByUserId(assginRoleDto.getUserId());
+
+        List<Long> roleIdList = assginRoleDto.getRoleIdList();
+        for (Long roleId : roleIdList) {
+            sysRoleMapper.doAssign(roleId,assginRoleDto.getUserId());
+        }
+    }
+
+    @Override
+    public List<Long> findRoleIdList(Long userId) {
+        return sysRoleMapper.findRoleIdList(userId);
     }
 }

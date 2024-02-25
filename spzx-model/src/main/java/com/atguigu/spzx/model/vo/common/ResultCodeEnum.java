@@ -19,6 +19,8 @@ public enum ResultCodeEnum {
     USER_NOT_EXISTS(302 , "用户不存在"),
     VALIDATECODE_EXPIRED(303 , "验证码已过期") ,
     TOKEN_INVALIDATE(304 , "token令牌无效") ,
+    FILE_TYPE_ERROR(305 , "文件类型不正确") ,
+
     STOCK_LESS( 219, "库存不足"),
 
     ;
