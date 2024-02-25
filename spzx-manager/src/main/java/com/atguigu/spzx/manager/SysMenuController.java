@@ -20,8 +20,9 @@ public class SysMenuController {
     SysMenuService sysMenuService;
 
 
+
     @Operation(summary = "更新菜单")
-    @DeleteMapping("updateMenu/{menuId}")
+    @PostMapping("updateMenu")
     public Result updateMenu(@RequestBody SysMenu sysMenu){
         sysMenuService.updateMenu(sysMenu);
         return Result.build(null,ResultCodeEnum.SUCCESS);

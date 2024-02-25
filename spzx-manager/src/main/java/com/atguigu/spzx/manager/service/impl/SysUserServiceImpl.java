@@ -137,6 +137,13 @@ public class SysUserServiceImpl implements SysUserService {
         sysUserMapper.deleteById(id);
     }
 
+    @Override
+    public void batchDelete(List<Long> ids) {
+        for(Long id : ids) {
+            sysUserMapper.deleteById(id);
+        }
+    }
+
 
     private void checkCaptchaCode(LoginDto loginDto) {
         String codeKey = loginDto.getCodeKey();

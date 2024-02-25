@@ -13,4 +13,5 @@ public interface SysMenuService {
     void deleteMenu(Long menuId);
 
     void updateMenu(SysMenu sysMenu);
+
 }

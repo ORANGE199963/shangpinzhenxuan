@@ -50,6 +50,7 @@ public class SysMenuServiceImpl implements SysMenuService {
     }
 
 
+
     public void deleteMenu2(Long menuId) {
         sysMenuMapper.deleteByMenuId(menuId);
         List<SysMenu> children = sysMenuMapper.findByParentId(menuId);

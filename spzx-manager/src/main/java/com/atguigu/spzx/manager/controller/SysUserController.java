@@ -11,6 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Tag(name = "用户管理")
 @RestController
 @RequestMapping("/admin/system/sysUser")
@@ -19,6 +21,12 @@ public class SysUserController {
     @Autowired
     SysUserService sysUserService;
 
+    @Operation(summary = "根据多个id进行批量删除")
+    @DeleteMapping("batchDelete")
+    public Result batchDelete(@RequestBody List<Long> ids){
+        sysUserService.batchDelete(ids);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
 
     @Operation(summary = "删除用户")
     @DeleteMapping("deleteById/{id}")

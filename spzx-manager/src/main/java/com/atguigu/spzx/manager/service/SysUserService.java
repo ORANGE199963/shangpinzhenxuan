@@ -7,6 +7,8 @@ import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.system.LoginVo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 public interface SysUserService {
     LoginVo login(LoginDto loginDto);
 
@@ -22,4 +24,5 @@ public interface SysUserService {
 
     void deleteById(Long id);
 
+    void batchDelete(List<Long> ids);
 }
