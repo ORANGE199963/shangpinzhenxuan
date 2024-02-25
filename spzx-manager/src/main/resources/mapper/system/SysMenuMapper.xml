@@ -28,4 +28,10 @@
     <insert id="doAssignRoleMenu">
         INSERT INTO `sys_role_menu`(role_id,menu_id,is_half) VALUE(#{roleId},#{menuId},#{isHalf})
     </insert>
+
+
+    <select id="getMenuIdList" resultType="java.lang.Long">
+        SELECT menu_id FROM `sys_role_menu` WHERE is_half = 0 AND role_id = #{roleId}
+    </select>
+
 </mapper>

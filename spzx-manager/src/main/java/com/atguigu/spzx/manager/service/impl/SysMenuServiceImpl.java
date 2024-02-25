@@ -56,7 +56,8 @@ public class SysMenuServiceImpl implements SysMenuService {
     public Map getMenuListAndMenuIdList(Long roleId) {
         Map map = new HashMap();
         map.put("menuList" ,this.menuListByParentId(0L));
-        map.put("menuIdList",null);
+        List<Long> menuIdList  = sysMenuMapper.getMenuIdList(roleId);
+        map.put("menuIdList",menuIdList);
 
         return map;
     }

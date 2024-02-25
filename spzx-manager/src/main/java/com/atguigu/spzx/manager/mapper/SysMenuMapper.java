@@ -20,4 +20,6 @@ public interface SysMenuMapper {
     void deleteByRoleId(AssginMenuDto menuDto);
 
     void doAssignRoleMenu(@Param("roleId") Long roleId,@Param("menuId") Number menuId,@Param("isHalf") Number isHalf);
+
+    List<Long> getMenuIdList(Long roleId);
 }
