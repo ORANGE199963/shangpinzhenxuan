@@ -22,4 +22,6 @@ public interface SysMenuMapper {
     void doAssignRoleMenu(@Param("roleId") Long roleId,@Param("menuId") Number menuId,@Param("isHalf") Number isHalf);
 
     List<Long> getMenuIdList(Long roleId);
+
+    List<SysMenu> findSysMenuList(@Param("userId") Long userId,@Param("parentId") Long parentId);
 }

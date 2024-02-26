@@ -30,6 +30,7 @@ spzx:
       - /webjars/**
       - /favicon.ico
       - /v3/api-docs/**x`
+#      - /admin/product/category/download
 minio:
   endpoint: http://192.168.126.128:9000
   username: admin

@@ -4,8 +4,6 @@ import com.atguigu.spzx.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
 @Schema(description = "分类实体类")
 public class Category extends BaseEntity {
@@ -28,7 +26,10 @@ public class Category extends BaseEntity {
 	@Schema(description = "是否存在子节点")
 	private Boolean hasChildren;
 
-	@Schema(description = "子节点List集合")
-	private List<Category> children;
+	@Schema(description = "当前分类的下级分类的数量")
+	private Integer childrenCount;
+
+//	@Schema(description = "子节点List集合")
+//	private List<Category> children;
 
 }

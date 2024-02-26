@@ -6,10 +6,12 @@ import com.atguigu.spzx.manager.service.SysMenuService;
 import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
+import com.atguigu.spzx.model.vo.system.SysMenuVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +77,42 @@ public class SysMenuServiceImpl implements SysMenuService {
         });
     }
 
+    @Override
+    public List<SysMenuVo> getMenuListByUserId(Long userId, Long parentId) {
+
+        List<SysMenu> sysMenuList = this.findSysMenuList(userId, parentId);
+        List<SysMenuVo> sysMenuVoList = this.sysMenuListToVoList(sysMenuList);
+        return sysMenuVoList;
+    }
+
+    private List<SysMenuVo> sysMenuListToVoList(List<SysMenu> sysMenuList) {
+
+        List<SysMenuVo> sysMenuVoList = new ArrayList<>();
+        sysMenuList.forEach(sysMenu -> {
+            SysMenuVo sysMenuVo = new SysMenuVo();
+            sysMenuVo.setTitle(sysMenu.getTitle());
+            sysMenuVo.setName(sysMenu.getComponent());
+
+            if(!CollectionUtils.isEmpty(sysMenu.getChildren())){
+                List<SysMenuVo> childrenSysMenuVo = this.sysMenuListToVoList(sysMenu.getChildren());
+                sysMenuVo.setChildren(childrenSysMenuVo);
+            }
+            sysMenuVoList.add(sysMenuVo);
+        });
+
+        return sysMenuVoList;
+    }
+
+    private List<SysMenu> findSysMenuList(Long userId,Long parentId){
+        List<SysMenu> sysMenuList = sysMenuMapper.findSysMenuList(userId,parentId);
+        sysMenuList.forEach(sysMenu -> {
+            List<SysMenu> children = this.findSysMenuList(userId, sysMenu.getId());
+            if(!CollectionUtils.isEmpty(children)){
+                sysMenu.setChildren(children);
+            }
+        });
+        return sysMenuList;
+    }
 
     public void deleteMenu2(Long menuId) {
         sysMenuMapper.deleteByMenuId(menuId);

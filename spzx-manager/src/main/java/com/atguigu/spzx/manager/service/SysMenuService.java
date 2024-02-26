@@ -2,6 +2,7 @@ package com.atguigu.spzx.manager.service;
 
 import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
+import com.atguigu.spzx.model.vo.system.SysMenuVo;
 
 import java.util.List;
 import java.util.Map;
@@ -19,4 +20,6 @@ public interface SysMenuService {
     Map getMenuListAndMenuIdList(Long roleId);
 
     void doAssignMenu(AssginMenuDto menuDto);
+
+    List<SysMenuVo> getMenuListByUserId(Long userId, Long parentId);
 }

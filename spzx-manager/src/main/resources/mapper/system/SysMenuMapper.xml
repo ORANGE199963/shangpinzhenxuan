@@ -34,4 +34,12 @@
         SELECT menu_id FROM `sys_role_menu` WHERE is_half = 0 AND role_id = #{roleId}
     </select>
 
+    <select id="findSysMenuList" resultType="com.atguigu.spzx.model.entity.system.SysMenu">
+        select distinct d.* from sys_user a
+            inner join sys_user_role b on a.id = b.user_id
+            inner join sys_role_menu c on b.role_id = c.role_id
+            inner join sys_menu d on c.menu_id = d.id
+
+        where a.id = #{userId} and d.parent_id = #{parentId}
+    </select>
 </mapper>

@@ -1,10 +1,12 @@
 package com.atguigu.spzx.manager.controller;
 
+import com.atguigu.spzx.manager.auth.ThreadLocalUtil;
 import com.atguigu.spzx.manager.service.SysMenuService;
 import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
+import com.atguigu.spzx.model.vo.system.SysMenuVo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,11 @@ public class SysMenuController {
     @Autowired
     SysMenuService sysMenuService;
 
+    @GetMapping("getMenuListByUserId")
+    public Result getMenuListByUserId(){
+        List<SysMenuVo> menuList = sysMenuService.getMenuListByUserId(ThreadLocalUtil.getSysUser().getId(),0L);
+        return Result.build(menuList,ResultCodeEnum.SUCCESS);
+    }
 
     @Operation(summary = "为角色分配菜单")
     @PostMapping("doAssignMenu")
