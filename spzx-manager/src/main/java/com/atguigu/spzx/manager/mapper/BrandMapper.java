@@ -18,4 +18,6 @@ public interface BrandMapper {
     public abstract void deleteById(Long id);
 
     List<Brand> findAll();
+
+    List<Brand> findByCategory3Id(Long category3Id);
 }

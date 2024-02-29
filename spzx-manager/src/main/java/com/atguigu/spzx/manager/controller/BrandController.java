@@ -18,6 +18,11 @@ public class BrandController {
     @Autowired
     private BrandService brandService ;
 
+    @GetMapping("findByCategory3Id/{category3Id}")
+    public Result findByCategory3Id(@PathVariable Long category3Id){
+        List<Brand> list = brandService.findByCategory3Id(category3Id);
+        return Result.build(list,ResultCodeEnum.SUCCESS);
+    }
     @GetMapping("findAllBrand")
     public Result findAllBrand(){
         List<Brand> list = brandService.findAll();

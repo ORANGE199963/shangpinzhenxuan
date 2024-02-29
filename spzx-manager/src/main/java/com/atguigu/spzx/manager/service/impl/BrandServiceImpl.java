@@ -7,11 +7,13 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 // com.atguigu.spzx.manager.service.impl;
 @Service
+@Transactional
 public class BrandServiceImpl implements BrandService {
 
     @Autowired
@@ -42,5 +44,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public List<Brand> findAll() {
         return brandMapper.findAll();
+    }
+
+    @Override
+    public List<Brand> findByCategory3Id(Long category3Id) {
+        return brandMapper.findByCategory3Id(category3Id);
     }
 }

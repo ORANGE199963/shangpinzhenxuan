@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.ProductMapper">
+    <sql id="whereCondition">
+        <where>
+            <if test="brandId!=null and brandId!='' ">
+                and a.brand_id = #{brandId}
+            </if>
+            <if test="category1Id!=null and category1Id!='' ">
+                and a.category1_id = #{category1Id}
+            </if>
+            <if test="category2Id!=null and category2Id!='' ">
+                and a.category2_id = #{category2Id}
+            </if>
+            <if test="category3Id!=null and category3Id!='' ">
+                and a.category3_id = #{category3Id}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectList" resultType="com.atguigu.spzx.model.entity.product.Product">
+        SELECT a.*,
+        b.name AS 'brandName'  ,
+        c.name AS 'category1Name',
+        d.name AS 'category2Name',
+        e.name AS 'category3Name'
+        FROM `product` a
+        INNER JOIN `brand` b ON a.brand_id = b.id
+        INNER JOIN `category` c ON c.id = a.category1_id
+        INNER JOIN `category` d ON d.id = a.category2_id
+        INNER JOIN `category` e ON e.id = a.category3_id
+        <include refid="whereCondition"></include>
+    </select>
+
+    <select id="findAllProductUnit" resultType="com.atguigu.spzx.model.entity.base.ProductUnit">
+        SELECT * FROM `product_unit` WHERE is_deleted = 0
+    </select>
+
+    <update id="deleteById">
+        UPDATE `product` SET is_deleted = 1 WHERE id = #{id}
+    </update>
+
+    <update id="updateAuditStatus">
+        UPDATE `product` SET audit_status = #{auditStatus}  where id = #{productId}
+    </update>
+    <select id="getById" resultType="com.atguigu.spzx.model.entity.product.Product">
+        select * from product where id = #{id} and is_deleted = 0
+    </select>
+    <insert id="addProduct" useGeneratedKeys="true" keyProperty="id">
+        insert into product (
+            id,
+            name,
+            brand_id,
+            category1_id,
+            category2_id,
+            category3_id,
+            unit_name,
+            slider_urls,
+            spec_value,
+            status,
+            audit_status,
+            audit_message,
+            create_time,
+            update_time,
+            is_deleted
+        ) values (
+                     #{id},
+                     #{name},
+                     #{brandId},
+                     #{category1Id},
+                     #{category2Id},
+                     #{category3Id},
+                     #{unitName},
+                     #{sliderUrls},
+                     #{specValue},
+                     #{status},
+                     #{auditStatus},
+                     #{auditMessage},
+                     now(),
+                     now() ,
+                     0
+                 )
+    </insert>
+</mapper>

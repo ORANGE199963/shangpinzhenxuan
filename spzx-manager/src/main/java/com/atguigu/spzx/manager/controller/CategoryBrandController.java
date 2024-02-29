@@ -18,6 +18,7 @@ public class CategoryBrandController {
     @Autowired
     CategoryBrandService categoryBrandService;
 
+
     @DeleteMapping("/deleteById/{id}")
     public Result deleteById(@PathVariable Long id) {
         categoryBrandService.deleteById(id);

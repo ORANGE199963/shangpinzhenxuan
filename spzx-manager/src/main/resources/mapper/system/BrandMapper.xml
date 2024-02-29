@@ -44,4 +44,10 @@
     <select id="findAll"  resultType="com.atguigu.spzx.model.entity.product.Brand">
         select  * from brand where is_deleted = 0
     </select>
+
+    <select id="findByCategory3Id" resultType="com.atguigu.spzx.model.entity.product.Brand">
+        SELECT b.* FROM `category_brand` a
+                            INNER JOIN `brand` b ON a.brand_id = b.id
+        WHERE a.category_id = #{category3Id}
+    </select>
 </mapper>
