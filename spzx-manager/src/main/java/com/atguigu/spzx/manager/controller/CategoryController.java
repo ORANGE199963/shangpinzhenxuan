@@ -11,10 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -28,6 +26,12 @@ public class CategoryController {
     @Autowired
     CategoryService categoryService;
 
+    @Operation(summary = "导入接口")
+    @PostMapping("importData")
+    public Result importData(MultipartFile file){
+        categoryService.importData(file);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
 
     @GetMapping("download")
     public void download(HttpServletResponse response) throws IOException {

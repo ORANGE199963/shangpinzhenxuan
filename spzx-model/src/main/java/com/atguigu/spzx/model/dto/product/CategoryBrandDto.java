@@ -10,7 +10,7 @@ public class CategoryBrandDto {
 	@Schema(description = "品牌id")
 	private Long brandId;
 
-	@Schema(description = "分类id")
+	@Schema(description = "第三级分类id")
 	private Long categoryId;
 
 }

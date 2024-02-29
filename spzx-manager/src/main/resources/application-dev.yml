@@ -29,7 +29,7 @@ spzx:
       - /doc.html
       - /webjars/**
       - /favicon.ico
-      - /v3/api-docs/**x`
+      - /v3/api-docs/**
 #      - /admin/product/category/download
 minio:
   endpoint: http://192.168.126.128:9000

@@ -14,4 +14,8 @@ public interface CategoryMapper {
     Integer countByParentId(Long parentId);
 
     List<Category> findAll();
+
+    void addCategory(List<Category> categoryList);
+
+    Category selectById(Long parentId);
 }

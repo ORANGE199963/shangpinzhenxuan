@@ -29,6 +29,8 @@ public class Category extends BaseEntity {
 	@Schema(description = "当前分类的下级分类的数量")
 	private Integer childrenCount;
 
+//	private boolean leaf;
+
 //	@Schema(description = "子节点List集合")
 //	private List<Category> children;
 

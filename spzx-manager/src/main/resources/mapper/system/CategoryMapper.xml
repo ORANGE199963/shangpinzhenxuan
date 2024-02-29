@@ -15,4 +15,17 @@
     <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.Category">
         select * from category where is_deleted=0
     </select>
+    
+    <insert id="addCategory" >
+        insert into category (id,name,image_url,parent_id,status,order_num)
+        values
+            <foreach collection="categoryList" item="category" separator=",">
+                (#{category.id},#{category.name},#{category.imageUrl},#{category.parentId},#{category.status},#{category.orderNum})
+            </foreach>
+    </insert>
+
+    <select id="selectById" resultType="com.atguigu.spzx.model.entity.product.Category">
+        SELECT * FROM `category` WHERE id = #{id} AND is_deleted = 0
+    </select>
+
 </mapper>

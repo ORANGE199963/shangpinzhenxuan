@@ -20,6 +20,7 @@ public enum ResultCodeEnum {
     VALIDATECODE_EXPIRED(303 , "验证码已过期") ,
     TOKEN_INVALIDATE(304 , "token令牌无效") ,
     FILE_TYPE_ERROR(305 , "文件类型不正确") ,
+    CATEGORY_BRAND_EXISTS(306 , "该分类和品牌关系已建立") ,
 
     STOCK_LESS( 219, "库存不足"),
 
