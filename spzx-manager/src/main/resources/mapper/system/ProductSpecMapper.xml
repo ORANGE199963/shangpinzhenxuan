@@ -35,4 +35,11 @@
     <select id="findAll" resultType="com.atguigu.spzx.model.entity.product.ProductSpec">
         SELECT * FROM `product_spec` WHERE is_deleted = 0
     </select>
+    <update id="deleteById">
+        update product_spec set
+                                update_time = now() ,
+                                is_deleted = 1
+        where
+            id = #{id}
+    </update>
 </mapper>

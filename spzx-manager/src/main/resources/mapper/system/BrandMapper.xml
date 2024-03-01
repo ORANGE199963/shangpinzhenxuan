@@ -6,7 +6,6 @@
     <select id="findByPage" resultType="com.atguigu.spzx.model.entity.product.Brand">
         select *
         from brand
-        where is_deleted = 0
         order by id desc
     </select>
 
@@ -34,10 +33,7 @@
     </update>
 
     <update id="deleteById">
-        update brand set
-                         update_time = now() ,
-                         is_deleted = 1
-        where
+        delete from brand where
             id = #{id}
     </update>
 

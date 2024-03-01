@@ -47,10 +47,7 @@
     </update>
 
     <update id="deleteById">
-        update category_brand set
-                                  update_time = now() ,
-                                  is_deleted = 1
-        where
+        delete from category_brand where
             id = #{id}
     </update>
 </mapper>

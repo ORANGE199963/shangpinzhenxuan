@@ -18,6 +18,11 @@ public class ProductSpecController {
     @Autowired
     private ProductSpecService productSpecService ;
 
+    @DeleteMapping("/deleteById/{id}")
+    public Result removeById(@PathVariable Long id) {
+        productSpecService.deleteById(id);
+        return Result.build(null , ResultCodeEnum.SUCCESS) ;
+    }
     @GetMapping("findAll")
     public Result findAll(){
         List<ProductSpec> list = productSpecService.findAll();
