@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--namespace: mapper接口全限定名（包名+接口名）-->
+<mapper namespace="com.atguigu.spzx.manager.mapper.SysOperLogMapper">
+
+    <insert id="addOperLog">
+        INSERT INTO `sys_oper_log`(title,method,request_method,operator_type,oper_name,oper_url,oper_ip,oper_param,json_result,STATUS,error_msg)
+            VALUE( #{title},#{method} ,#{requestMethod},#{operatorType},#{operName} ,#{operUrl},#{operIp},#{operParam} ,#{jsonResult},#{status},#{errorMsg} )
+    </insert>
+</mapper>

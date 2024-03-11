@@ -1,6 +1,6 @@
 package com.atguigu.spzx.manager.controller;
 
-import com.atguigu.spzx.manager.auth.ThreadLocalUtil;
+import com.atguigu.common.utils.ThreadLocalUtil;
 import com.atguigu.spzx.manager.service.SysMenuService;
 import com.atguigu.spzx.model.dto.system.AssginMenuDto;
 import com.atguigu.spzx.model.entity.system.SysMenu;

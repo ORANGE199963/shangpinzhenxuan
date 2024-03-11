@@ -19,4 +19,10 @@ public interface ProductService {
     void deleteById(Long id);
 
     void updateAuditStatus(Long productId, Integer auditStatus);
+
+    void updateStatus(Long spuId, Integer status);
+
+    void updateSkuStatus(Long skuId, Integer status);
+
+    void updateProduct(Product product);
 }

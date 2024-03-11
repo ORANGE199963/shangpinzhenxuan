@@ -1,0 +1,42 @@
+server:
+  port: 8222
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.126.128:8848
+    gateway:
+      routes:
+      - id: product-service
+        uri: lb://service-product
+        predicates:
+        - Path=/api/product/**
+      - id: user-service
+        uri: lb://service-user
+        predicates:
+          - Path=/api/user/**
+      - id: cart-service
+        uri: lb://service-cart
+        predicates:
+          - Path=/api/order/cart/**
+      - id: order-service
+        uri: lb://service-order
+        predicates:
+          - Path=/api/order/orderInfo/**
+      globalcors: # 网关中统一处理跨域（目标接口不需要@CrossOrigin）
+        cors-configurations:
+          '[/**]': #对所有接口路径都支持跨域
+            allowedOriginPatterns: "*" #允许所有的源进行跨域（http://101.11.1.1:1234）
+            # 允许请求中携带的头信息
+            allowedHeaders: "*"
+            # 运行跨域的请求方式 ,get  post  put ...
+            allowedMethods: "*"
+      discovery:
+        locator:
+          enabled: true #通过服务名进行请求的转发（uri写的是服务名）
+  data:
+    redis:
+      port: 6379
+      host: 192.168.126.128

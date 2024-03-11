@@ -1,5 +1,8 @@
 package com.atguigu.spzx.manager.controller;
 
+import com.atguigu.spzx.common.log.annotation.Log;
+import com.atguigu.spzx.common.log.enums.BusinessType;
+import com.atguigu.spzx.common.log.enums.OperatorType;
 import com.atguigu.spzx.manager.service.SysRoleService;
 import com.atguigu.spzx.model.dto.system.AssginRoleDto;
 import com.atguigu.spzx.model.dto.system.SysRoleDto;
@@ -50,6 +53,7 @@ public class SysRoleController {
         return Result.build(null,ResultCodeEnum.SUCCESS);
     }
 
+    @Log(title = "角色管理:添加角色",operatorType = OperatorType.MANAGE,businessType = BusinessType.ADD,isSaveRequestData = true,isSaveResponseData = true)
     @Operation(summary = "添加角色")
     @PostMapping("addRole")
     public Result addRole(@RequestBody SysRole sysRole){

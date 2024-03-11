@@ -21,4 +21,8 @@ public interface ProductMapper {
     void deleteById(Long id);
 
     void updateAuditStatus(@Param("productId") Long productId,@Param("auditStatus") Integer auditStatus);
+
+    void updateStatus(@Param("spuId") Long spuId,@Param("status") Integer status);
+
+    void updateById(Product product);
 }

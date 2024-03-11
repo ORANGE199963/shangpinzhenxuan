@@ -7,6 +7,7 @@ import com.atguigu.spzx.model.entity.product.Product;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.github.pagehelper.PageInfo;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,12 +19,31 @@ public class ProductController {
     @Autowired
     ProductService productService;
 
+    @Operation(summary = "修改商品")
+    @PostMapping("updateProduct")
+    public Result updateProduct(@RequestBody Product product){
+        productService.updateProduct(product);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
+    @GetMapping("updateSkuStatus/{skuId}/{status}")
+    public Result updateSkuStatus(@PathVariable Long skuId,@PathVariable Integer status){
+        productService.updateSkuStatus(skuId,status);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
+    @GetMapping("updateStatus/{spuId}/{status}")
+    public Result updateStatus(@PathVariable Long spuId,@PathVariable Integer status){
+        productService.updateStatus(spuId,status);
+        return Result.build(null,ResultCodeEnum.SUCCESS);
+    }
+
     @GetMapping("updateAuditStatus/{productId}/{auditStatus}")
     public Result updateAuditStatus(@PathVariable Long productId,@PathVariable Integer auditStatus){
         productService.updateAuditStatus(productId,auditStatus);
         return Result.build(null,ResultCodeEnum.SUCCESS);
     }
-    @GetMapping("deleteById/{id}")
+    @DeleteMapping("deleteById/{id}")
     public Result deleteById(@PathVariable Long id){
         productService.deleteById(id);
         return Result.build(null,ResultCodeEnum.SUCCESS);

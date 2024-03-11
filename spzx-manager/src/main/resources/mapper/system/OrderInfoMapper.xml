@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.OrderInfoMapper">
+
+        <select id="getOrderSta" resultType="com.atguigu.spzx.model.entity.order.OrderStatistics">
+            SELECT DATE(create_time) AS 'orderDate' ,SUM(total_amount) AS 'totalAmount' FROM `order_info`
+            WHERE DATE(create_time) = #{preDate}
+            GROUP BY DATE(create_time)
+        </select>
+</mapper>

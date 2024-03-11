@@ -4,6 +4,8 @@ import com.atguigu.spzx.model.entity.base.BaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Schema(description = "分类实体类")
 public class Category extends BaseEntity {
@@ -31,7 +33,7 @@ public class Category extends BaseEntity {
 
 //	private boolean leaf;
 
-//	@Schema(description = "子节点List集合")
-//	private List<Category> children;
+	@Schema(description = "子节点List集合")
+	private List<Category> children;
 
 }

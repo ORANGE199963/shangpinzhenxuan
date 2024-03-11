@@ -1,6 +1,7 @@
 package com.atguigu.spzx.manager.auth;
 
 import com.alibaba.fastjson.JSON;
+import com.atguigu.common.utils.ThreadLocalUtil;
 import com.atguigu.spzx.model.entity.system.SysUser;
 import com.atguigu.spzx.model.vo.common.Result;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.manager.mapper.OrderStaMapper">
+    <sql id="whereCondition">
+        <where>
+            <if test="createTimeBegin!=null and createTimeBegin!=''">
+                and order_date >= #{createTimeBegin}
+            </if>
+            <if test="createTimeEnd!=null and createTimeEnd!=''">
+                and order_date &lt;= #{createTimeEnd}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectOrderStaList" resultType="com.atguigu.spzx.model.entity.order.OrderStatistics">
+        SELECT order_date,total_amount FROM `order_statistics`
+        <include refid="whereCondition"></include>
+        ORDER BY order_date
+    </select>
+    <insert id="addOrderSta">
+        INSERT INTO `order_statistics`(order_date,total_amount) VALUE(#{orderDate},#{totalAmount})
+    </insert>
+
+    <select id="getByPreDate" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM  `order_statistics` WHERE order_date = #{preDate}
+    </select>
+
+</mapper>

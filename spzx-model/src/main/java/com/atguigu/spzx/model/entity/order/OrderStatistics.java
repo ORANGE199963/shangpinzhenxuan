@@ -11,6 +11,6 @@ public class OrderStatistics extends BaseEntity {
 
     private Date orderDate;
     private BigDecimal totalAmount;
-    private Integer totalNum;
+    //private Integer totalNum;
     
 }

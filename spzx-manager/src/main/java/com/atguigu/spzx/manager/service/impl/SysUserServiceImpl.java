@@ -3,7 +3,7 @@ package com.atguigu.spzx.manager.service.impl;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.alibaba.fastjson.JSON;
 import com.atguigu.spzx.common.exp.GuiguException;
-import com.atguigu.spzx.manager.auth.ThreadLocalUtil;
+import com.atguigu.common.utils.ThreadLocalUtil;
 import com.atguigu.spzx.manager.controller.SysUserVo;
 import com.atguigu.spzx.manager.mapper.SysUserMapper;
 import com.atguigu.spzx.manager.service.SysUserService;
