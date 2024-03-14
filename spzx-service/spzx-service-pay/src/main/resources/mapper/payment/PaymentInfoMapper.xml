@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.pay.mapper.PaymentInfoMapper">
+
+    <select id="getByOrderNo" resultType="com.atguigu.spzx.model.entity.pay.PaymentInfo">
+        SELECT * FROM `payment_info` WHERE order_no = #{orderNo} and is_deleted = 0
+    </select>
+
+    <insert id="addPaymentInfo">
+        insert into payment_info (
+            id,
+            user_id,
+            order_no,
+            pay_type,
+            out_trade_no,
+            amount,
+            content,
+            payment_status,
+            callback_time,
+            callback_content
+        ) values (
+                     #{id},
+                     #{userId},
+                     #{orderNo},
+                     #{payType},
+                     #{outTradeNo},
+                     #{amount},
+                     #{content},
+                     #{paymentStatus},
+                     #{callbackTime},
+                     #{callbackContent}
+                 )
+    </insert>
+
+    <update id="afterPaySuccess">
+        UPDATE `payment_info`
+        SET out_trade_no = #{tradeNo},
+            payment_status =  1 ,
+            callback_time = NOW() ,
+            callback_content = #{content}
+        WHERE order_no = #{orderNo}
+    </update>
+
+</mapper>

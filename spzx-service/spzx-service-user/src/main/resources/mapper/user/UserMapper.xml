@@ -15,5 +15,37 @@
         UPDATE `user_info` SET last_login_ip = #{lastLoginIp} , last_login_time = #{lastLoginTime} where id = #{id}
     </update>
 
+    <select id="findUserAddressList" resultType="com.atguigu.spzx.model.entity.user.UserAddress">
+        SELECT * FROM user_address WHERE is_deleted = 0 AND user_id = #{userId}
+    </select>
+
+    <select id="findByParentCode" resultType="com.atguigu.spzx.model.entity.base.Region">
+        select * from region where parent_code = #{parentCode}
+    </select>
+
+    <select id="getPcdName" resultType="java.lang.String">
+        SELECT CONCAT(a.name,b.name,c.name) AS pcdname FROM `region` a
+                                                                INNER JOIN `region` b ON a.code = b.parent_code
+                                                                INNER JOIN `region` c ON b.code = c.parent_code
+        WHERE c.code=#{districtCode}
+    </select>
+
+    <insert id="addAddress">
+        INSERT INTO `user_address`
+        (user_id,NAME,phone,tag_name,province_code,city_code,district_code,address,full_address,is_default)
+            VALUE(#{userId},#{name},#{phone},#{tagName},#{provinceCode},#{cityCode},#{districtCode},#{address},#{fullAddress},#{isDefault})
+
+    </insert>
+
+    <update id="updateAddressIsDefault">
+        UPDATE `user_address` SET is_default = 0 WHERE user_id = #{userId}
+    </update>
+    <select id="findById" resultType="com.atguigu.spzx.model.entity.user.UserAddress">
+        SELECT * FROM `user_address` WHERE id = #{addressId} and is_deleted = 0
+    </select>
+
+    <select id="getById" resultType="com.atguigu.spzx.model.entity.user.UserInfo">
+        SELECT * FROM `user_info` WHERE id =#{userId} and is_deleted = 0
+    </select>
 
 </mapper>

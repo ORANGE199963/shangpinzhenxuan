@@ -25,6 +25,10 @@ spring:
         uri: lb://service-order
         predicates:
           - Path=/api/order/orderInfo/**
+      - id: pay-service
+        uri: lb://service-pay
+        predicates:
+          - Path=/api/order/alipay/**
       globalcors: # 网关中统一处理跨域（目标接口不需要@CrossOrigin）
         cors-configurations:
           '[/**]': #对所有接口路径都支持跨域

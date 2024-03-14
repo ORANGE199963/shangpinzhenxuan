@@ -19,6 +19,12 @@ public class CartController {
     @Autowired
     CartService cartService;
 
+    @GetMapping("deleteCartInfoIsCheckedOne")
+    public void deleteCartInfoIsCheckedOne(){
+        cartService.deleteCartInfoIsCheckedOne();
+        return;
+    }
+
     @GetMapping("getCartInfoIsCheckedOne")
     public List<CartInfo> getCartInfoIsCheckedOne(){
         return cartService.getCartInfoIsCheckedOne();

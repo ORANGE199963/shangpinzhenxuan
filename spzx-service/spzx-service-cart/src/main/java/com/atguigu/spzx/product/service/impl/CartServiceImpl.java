@@ -26,7 +26,7 @@ public class CartServiceImpl implements CartService {
     public void addToCart(Long skuId, Integer num) {
         String key = "user:cart:" + ThreadLocalUtil.getUserInfo().getId();
 
-        String jsonString = (String)stringRedisTemplate.opsForHash().get(key, String.valueOf(skuId));//大key  小key , 返回值就是一个sku对应的CartInfo的json字符串
+        String jsonString = (String) stringRedisTemplate.opsForHash().get(key, String.valueOf(skuId));//大key  小key , 返回值就是一个sku对应的CartInfo的json字符串
 
         CartInfo cartInfo = JSON.parseObject(jsonString, CartInfo.class);
 
@@ -34,7 +34,7 @@ public class CartServiceImpl implements CartService {
         ProductSku productSku = productServiceFeign.getProductId(skuId);
 
         //新商品加入到购物车
-        if (cartInfo==null){
+        if (cartInfo == null) {
             cartInfo = new CartInfo();
             cartInfo.setUserId(ThreadLocalUtil.getUserInfo().getId());
             cartInfo.setSkuId(skuId);
@@ -46,13 +46,13 @@ public class CartServiceImpl implements CartService {
 
 
             jsonString = JSON.toJSONString(cartInfo);//小value
-            stringRedisTemplate.opsForHash().put(key,String.valueOf(skuId),jsonString);
-        }else {
+            stringRedisTemplate.opsForHash().put(key, String.valueOf(skuId), jsonString);
+        } else {
             //该商品以被加入购物车，只需要修改skunum数量即可
             cartInfo.setSkuNum(cartInfo.getSkuNum() + num);
 
             jsonString = JSON.toJSONString(cartInfo);//小value
-            stringRedisTemplate.opsForHash().put(key,String.valueOf(skuId),jsonString);
+            stringRedisTemplate.opsForHash().put(key, String.valueOf(skuId), jsonString);
         }
     }
 
@@ -62,12 +62,12 @@ public class CartServiceImpl implements CartService {
         String key = "user:cart:" + id;
         List<Object> values = stringRedisTemplate.opsForHash().values(key);
 
-          List<CartInfo> cartInfoList  = values.stream().map(obj -> {
-              String jsonString  = String.valueOf(obj);
-              CartInfo cartInfo = JSON.parseObject(jsonString,CartInfo.class);
-              return cartInfo;
-          }).collect(Collectors.toList());
-        return cartInfoList                                                                                                                 ;
+        List<CartInfo> cartInfoList = values.stream().map(obj -> {
+            String jsonString = String.valueOf(obj);
+            CartInfo cartInfo = JSON.parseObject(jsonString, CartInfo.class);
+            return cartInfo;
+        }).collect(Collectors.toList());
+        return cartInfoList;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class CartServiceImpl implements CartService {
         String bigKey = "user:cart:" + id;
 
         String smallKey = String.valueOf(skuId);
-        stringRedisTemplate.opsForHash().delete(bigKey,smallKey);
+        stringRedisTemplate.opsForHash().delete(bigKey, smallKey);
     }
 
     @Override
@@ -86,11 +86,10 @@ public class CartServiceImpl implements CartService {
         String smallKey = String.valueOf(skuId);
         Object o = stringRedisTemplate.opsForHash().get(bigKey, smallKey);
         String json = String.valueOf(o);
-        CartInfo cartInfo = JSON.parseObject(json,CartInfo.class);
+        CartInfo cartInfo = JSON.parseObject(json, CartInfo.class);
         cartInfo.setIsChecked(isChecked);
 
-        stringRedisTemplate.opsForHash().put(bigKey,smallKey,JSON.toJSONString(cartInfo));
-
+        stringRedisTemplate.opsForHash().put(bigKey, smallKey, JSON.toJSONString(cartInfo));
 
 
     }
@@ -106,7 +105,7 @@ public class CartServiceImpl implements CartService {
             cartInfo.setIsChecked(isChecked);
             String smallKey = String.valueOf(cartInfo.getSkuId());
 
-            stringRedisTemplate.opsForHash().put(bigKey,smallKey,JSON.toJSONString(cartInfo));
+            stringRedisTemplate.opsForHash().put(bigKey, smallKey, JSON.toJSONString(cartInfo));
 
         });
     }
@@ -126,4 +125,19 @@ public class CartServiceImpl implements CartService {
 
         return collectOne;
     }
+
+    @Override
+    public void deleteCartInfoIsCheckedOne() {
+
+        Long id = ThreadLocalUtil.getUserInfo().getId();
+        String bigKey = "user:cart:" + id;
+
+        //当前用户购物车中所有isChecked=1的cartInfo
+        List<CartInfo> cartInfoList = this.getCartInfoIsCheckedOne();
+        cartInfoList.forEach(cartInfo -> {
+            stringRedisTemplate.opsForHash().delete(bigKey, String.valueOf(cartInfo.getSkuId()));
+        });
+
+    }
 }
+

@@ -7,11 +7,10 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.ComponentScan;
 
 @EnableH5Inter
-@EnableCaching
+@EnableCaching //开启spring-cache
 @ComponentScan(basePackages = "com.atguigu")
 @SpringBootApplication
 public class ProductApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(ProductApplication.class,args);
     }

@@ -20,4 +20,6 @@ public interface CartService {
     void clearCart();
 
     List<CartInfo> getCartInfoIsCheckedOne();
+
+    void deleteCartInfoIsCheckedOne();
 }

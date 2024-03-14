@@ -5,6 +5,8 @@ import com.atguigu.common.utils.ThreadLocalUtil;
 import com.atguigu.spzx.common.exp.GuiguException;
 import com.atguigu.spzx.model.dto.h5.UserLoginDto;
 import com.atguigu.spzx.model.dto.h5.UserRegisterDto;
+import com.atguigu.spzx.model.entity.base.Region;
+import com.atguigu.spzx.model.entity.user.UserAddress;
 import com.atguigu.spzx.model.entity.user.UserInfo;
 import com.atguigu.spzx.model.vo.common.ResultCodeEnum;
 import com.atguigu.spzx.model.vo.h5.UserInfoVo;
@@ -14,11 +16,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -37,35 +41,35 @@ public class UserServiceImpl implements UserService {
         String code = userRegisterDto.getCode();//用户输入的短信验证码
         String password = userRegisterDto.getPassword();//密码
         String nickName = userRegisterDto.getNickName();
-        if(StringUtils.isEmpty(username)){
+        if (StringUtils.isEmpty(username)) {
             throw new GuiguException(ResultCodeEnum.DATA_ERROR);
         }
-        if(StringUtils.isEmpty(code)){
+        if (StringUtils.isEmpty(code)) {
             throw new GuiguException(ResultCodeEnum.DATA_ERROR);
         }
-        if(StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(password)) {
             throw new GuiguException(ResultCodeEnum.DATA_ERROR);
         }
-        if(StringUtils.isEmpty(nickName)){
+        if (StringUtils.isEmpty(nickName)) {
             throw new GuiguException(ResultCodeEnum.DATA_ERROR);
         }
 
         //2、校验短信验证码是否正确。从redis中根据手机号获取验证码，和用户输入的验证码比较（VALIDATECODE_ERROR）
         String key = "user:code:" + username; //注意：把你的redis打开，你看你的key怎么写的
         String codeFromRedis = stringRedisTemplate.opsForValue().get(key);
-        if(StringUtils.isEmpty(codeFromRedis)){
-            throw new GuiguException(209,"验证码已过期");
+        if (StringUtils.isEmpty(codeFromRedis)) {
+            throw new GuiguException(209, "验证码已过期");
         }
 
-        if (!codeFromRedis.equals(code)){
-            throw new GuiguException(209,"验证码不正确");
+        if (!codeFromRedis.equals(code)) {
+            throw new GuiguException(209, "验证码不正确");
         }
 
 
         //3、根据用户名userName（也就是手机号）查询用户是否存在（username不允许重复，USER_NAME_IS_EXISTS）
         UserInfo userInfo = userMapper.findByUserName(username);
-        if(userInfo!=null){
-            throw new GuiguException(209,"该手机号已被占用");
+        if (userInfo != null) {
+            throw new GuiguException(209, "该手机号已被占用");
         }
 
 
@@ -89,24 +93,24 @@ public class UserServiceImpl implements UserService {
     public String login(UserLoginDto userLoginDto, HttpServletRequest request) {
         String username = userLoginDto.getUsername();//手机号
         String password = userLoginDto.getPassword();//密码
-        if(StringUtils.isEmpty(username) || StringUtils.isEmpty(password)){
+        if (StringUtils.isEmpty(username) || StringUtils.isEmpty(password)) {
             throw new GuiguException(ResultCodeEnum.DATA_ERROR);
         }
 
 
         //根据手机号查询该用户是否存在
         UserInfo userInfo = userMapper.findByUserName(username);
-        if(userInfo==null){
+        if (userInfo == null) {
             throw new GuiguException(ResultCodeEnum.LOGIN_ERROR);//用户名或者密码错误
         }
 
         //密码校验
-        if (!userInfo.getPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)))){
+        if (!userInfo.getPassword().equals(DigestUtils.md5DigestAsHex(password.getBytes(StandardCharsets.UTF_8)))) {
             throw new GuiguException(ResultCodeEnum.LOGIN_ERROR);//用户名或者密码错误
         }
 
         //状态校验
-        if(userInfo.getStatus().intValue()==0){
+        if (userInfo.getStatus().intValue() == 0) {
             throw new GuiguException(ResultCodeEnum.ACCOUNT_STOP);
         }
 
@@ -115,10 +119,10 @@ public class UserServiceImpl implements UserService {
         //UPDATE `user_info` SET last_login_ip = #{} , last_login_time = #{} where id = #{}
         userMapper.updateLoginInfo(userInfo);
 
-        String token = UUID.randomUUID().toString().replaceAll("-","");
+        String token = UUID.randomUUID().toString().replaceAll("-", "");
         String key = "user:login:" + token;
         String jsonString = JSON.toJSONString(userInfo);
-        stringRedisTemplate.opsForValue().set(key,jsonString,30, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(key, jsonString, 30, TimeUnit.MINUTES);
 
         return token;//给前端返回的token，将来前端发起请求时，会将token放在请求头中，传给后端接口
     }
@@ -147,6 +151,47 @@ public class UserServiceImpl implements UserService {
     public void logout(String token) {
         String key = "user:login:" + token;
         stringRedisTemplate.delete(key);
+    }
+
+    @Override
+    public List<Region> findByParentCode(Long parentCode) {
+        return userMapper.findByParentCode(parentCode);
+    }
+
+    @Transactional
+    @Override
+    public void addAddress(UserAddress userAddress) {
+        Long userId = ThreadLocalUtil.getUserInfo().getId();
+        userAddress.setUserId(userId);
+
+        String pcdName = userMapper.getPcdName(userAddress.getDistrictCode());
+
+        String fullAddress = pcdName + userAddress.getAddress();
+        userAddress.setFullAddress((fullAddress));
+
+        if (userAddress.getIsDefault().intValue() == 1) {
+            userMapper.updateAddressIsDefault(userId);
+        }
+        userMapper.addAddress(userAddress);
+
+
+    }
+
+    @Override
+    public List<UserAddress> findUserAddressList() {
+        Long userId = ThreadLocalUtil.getUserInfo().getId();
+        return userMapper.findUserAddressList(userId);
+    }
+
+
+    @Override
+    public UserAddress findByAddressId(Long addressId) {
+        return userMapper.findById(addressId);
+    }
+
+    @Override
+    public UserInfo getByUserId(Long userId) {
+        return userMapper.getById(userId);
     }
 
 

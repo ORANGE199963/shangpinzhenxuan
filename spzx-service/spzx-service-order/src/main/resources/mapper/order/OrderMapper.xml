@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.spzx.order.mapper.OrderMapper">
+
+
+    <insert id="addOrder" useGeneratedKeys="true" keyProperty="id">
+        insert into order_info (
+            user_id,
+            nick_name,
+            order_no,
+            coupon_id,
+            total_amount,
+            coupon_amount,
+            original_total_amount,
+            feight_fee,
+            order_status,
+            receiver_name,
+            receiver_phone,
+            receiver_tag_name,
+            receiver_province,
+            receiver_city,
+            receiver_district,
+            receiver_address,
+            remark
+        ) values (
+                     #{userId},
+                     #{nickName},
+                     #{orderNo},
+                     #{couponId},
+                     #{totalAmount},
+                     #{couponAmount},
+                     #{originalTotalAmount},
+                     #{feightFee},
+                     #{orderStatus},
+                     #{receiverName},
+                     #{receiverPhone},
+                     #{receiverTagName},
+                     #{receiverProvince},
+                     #{receiverCity},
+                     #{receiverDistrict},
+                     #{receiverAddress},
+                     #{remark}
+                 )
+    </insert>
+
+    <insert id="addOrderItem">
+        insert into order_item (
+            order_id,
+            sku_id,
+            sku_name,
+            thumb_img,
+            sku_price,
+            sku_num
+        ) values (
+                     #{orderId},
+                     #{skuId},
+                     #{skuName},
+                     #{thumbImg},
+                     #{skuPrice},
+                     #{skuNum}
+                 )
+    </insert>
+
+    <insert id="addOrderLog">
+        insert into order_log (
+            order_id,
+            operate_user,
+            process_status,
+            note
+        ) values (
+                     #{orderId},
+                     #{operateUser},
+                     #{processStatus},
+                     #{note}
+                 )
+    </insert>
+
+    <select id="getOrderInfoById" resultType="com.atguigu.spzx.model.entity.order.OrderInfo">
+        SELECT * FROM `order_info` WHERE id = #{orderId} and is_deleted = 0
+    </select>
+
+    <select id="getOrderItemListByOrderId" resultType="com.atguigu.spzx.model.entity.order.OrderItem">
+        SELECT * FROM `order_item` WHERE order_id  =  #{orderId} and is_deleted = 0
+    </select>
+
+    <sql id="whereCondition">
+        <where>
+            and user_id = #{userId}
+            and is_deleted = 0
+            <if test="orderStatus!=null">
+                and order_status = #{orderStatus}
+            </if>
+        </where>
+    </sql>
+
+    <select id="findList" resultType="com.atguigu.spzx.model.entity.order.OrderInfo">
+        SELECT * FROM `order_info`    <include refid="whereCondition"></include>
+    </select>
+
+    <select id="getByOrderNo" resultType="com.atguigu.spzx.model.entity.order.OrderInfo">
+        SELECT * FROM `order_info` WHERE order_no = #{orderNo} and is_deleted = 0
+    </select>
+
+    <update id="afterPaySuccess">
+        UPDATE `order_info` SET pay_type = #{payType},order_status=1 , payment_time = NOW() WHERE order_no = #{orderNo}
+    </update>
+
+    <update id="cancelOrder">
+        UPDATE `order_info` SET order_status = -1 , cancel_time = NOW(), cancel_reason = #{reason}
+        WHERE order_no =  #{orderNo}
+    </update>
+</mapper>

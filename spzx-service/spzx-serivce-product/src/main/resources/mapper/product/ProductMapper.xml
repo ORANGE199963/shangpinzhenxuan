@@ -5,6 +5,20 @@
     <select id="getSkuListByProductId" resultType="com.atguigu.spzx.model.entity.product.ProductSku">
         SELECT * FROM `product_sku` WHERE product_id = #{productId} and is_deleted = 0
     </select>
+
+
+    <select id="getSkuBySkuId" resultType="com.atguigu.spzx.model.entity.product.ProductSku">
+        SELECT * FROM `product_sku` WHERE id = #{skuId} and is_deleted = 0
+    </select>
+
+    <select id="getSpuBySpuId" resultType="com.atguigu.spzx.model.entity.product.Product">
+        SELECT * FROM `product` WHERE id = #{productId} and is_deleted = 0
+    </select>
+
+    <select id="getProductDetailsByProductId" resultType="com.atguigu.spzx.model.entity.product.ProductDetails">
+        SELECT * FROM `product_details` WHERE product_id = #{productId} and is_deleted = 0
+    </select>
+
     <select id="findIndexSkuList" resultType="com.atguigu.spzx.model.entity.product.ProductSku">
         SELECT a.*
         FROM `product_sku` a
@@ -66,14 +80,8 @@
         select * from brand where is_deleted = 0
     </select>
 
-    <select id="getSkuBySkuId" resultType="com.atguigu.spzx.model.entity.product.ProductSku">
-        SELECT * FROM `product_sku` WHERE id = #{skuId} and is_deleted = 0
-    </select>
-    <select id="getProductDetailsByProductId" resultType="com.atguigu.spzx.model.entity.product.ProductDetails">
-        SELECT * FROM `product_details` WHERE product_id = #{productId} and is_deleted = 0
-    </select>
+    <update id="updateSku">
+        UPDATE `product_sku` SET stock_num = stock_num - #{num}   , sale_num=sale_num  + #{num} WHERE id = #{skuId}
+    </update>
 
-    <select id="getSpuBySpuId" resultType="com.atguigu.spzx.model.entity.product.Product">
-        SELECT * FROM `product` WHERE id = #{productId} and is_deleted = 0
-    </select>
 </mapper>

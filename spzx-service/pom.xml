@@ -16,6 +16,7 @@
         <module>spzx-service-order</module>
         <module>spzx-serivce-product</module>
         <module>spzx-service-cart</module>
+        <module>spzx-service-pay</module>
     </modules>
 
     <properties>

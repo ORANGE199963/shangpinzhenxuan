@@ -13,6 +13,10 @@
     <packaging>pom</packaging>
     <modules>
         <module>spzx-service-product-client</module>
+        <module>spzx-service-cart-client</module>
+        <module>spzx-service-user-client</module>
+        <module>spzx-service-order-client</module>
+        <module>spzx-service-pay-client</module>
     </modules>
 
     <properties>
